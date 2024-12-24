@@ -1,3 +1,7 @@
 {
-    "abl.checkProgressBinary": false
+    "abl.checkProgressBinary": false,
+    "fiveServer.ignore": [
+        "**/output/**"
+    ],
+    "abl.warnConfigFile": false
 }

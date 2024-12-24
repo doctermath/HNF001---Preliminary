@@ -19,13 +19,17 @@ from tabulate import tabulate
 import os
 import sys
 import requests
+import math
 
 
 
 # %%
+# Part Number to calculate
+pn = sys.argv[1]
+
 # Import JSON Data From API.
 # API URL
-url = "http://172.16.1.59:18080/v1/web/get-spare-parts-all-history-data"
+url = "http://172.16.1.59:18080/v1/web/get-spare-parts-all-history-data?partnumber=" + pn
 
 # Fetch JSON data from the API
 response = requests.get(url)
@@ -35,11 +39,8 @@ df = response.json()  # Parse JSON data
 # Convert JSON to Pandas DataFrame
 data = pd.DataFrame(df['data'])
 
-# Part Number to calculate
-pn = sys.argv[1]
-
 # Display DataFrame
-# display(data)
+# print(df)
 
 # %%
 def process_pn(data, pn_to_filter):
@@ -64,7 +65,7 @@ pn_to_filter = pn # // All PN now in string  # <--- nih yang ini (APABILA MEMILI
 formatted_df = process_pn(data, pn_to_filter)
 
 # MOVING AVERAGE
-last_12_sum = formatted_df['Quantity'].iloc[:12].sum()
+last_12_sum = formatted_df['Quantity'].iloc[:12].sum() 
 formatted_df['MA_Prediction'] = np.nan
 for i in range(1, 13): #ini juga sama kalo mulai D-2 range nya 2,13
     formatted_df.loc[formatted_df['Period'] == i, 'MA_Prediction'] = formatted_df['Quantity'].iloc[:i].sum() / i
@@ -161,9 +162,10 @@ next_period_prediction = formatted_df.loc[formatted_df['Period'] == 13, best_mod
 # %%
 #PLOT SEMUA GRAFIK
 # Ensure the output directory exists
-os.makedirs('./output', exist_ok=True)
+output_path = "./python/alpha/output/"
+os.makedirs(output_path, exist_ok=True)
 
-plot_semua_path = './output/plotsemua.png'
+plot_semua_path = output_path + 'plotsemua.png'
 plt.figure(figsize=(12, 8))
 plt.plot(formatted_df['Period'], formatted_df['Quantity'], label='Data Historis', marker='o', color='black')
 plt.plot(formatted_df['Period'], formatted_df['MA_Prediction'], label='Prediksi MA', linestyle='--', color='orange')
@@ -185,7 +187,7 @@ plt.savefig(plot_semua_path)
 # %%
 
 # PLOT GRAFIK PALING BAGUS
-plot_best_path = './output/plotbest.png'
+plot_best_path = output_path + 'plotbest.png'
 plt.figure(figsize=(12, 8))
 plt.plot(formatted_df['Period'], formatted_df['Quantity'], label='Actual Quantity', marker='o', color='black')
 plt.plot(formatted_df['Period'], formatted_df[best_model_name], label=f'Best Model: {best_model_name}', linestyle='-', color='blue')
@@ -201,8 +203,18 @@ plt.savefig(plot_best_path)
 # %%
 ### Export the All Forecast Data to JSON
 
+# Function to replace NaN with a desired value
+def replace_nan(data, replacement=None):
+    if isinstance(data, list):
+        return [replace_nan(item, replacement) for item in data]
+    elif isinstance(data, dict):
+        return {key: replace_nan(value, replacement) for key, value in data.items()}
+    elif isinstance(data, float) and math.isnan(data):
+        return replacement  # Replace NaN with the specified value (e.g., None or "")
+    return data
+
 # Convert DataFrame to JSON format inside a "data" key
-output_file_path = './output/result.json'
+output_file_path = output_path + 'result.json'
 data_to_export = {
     "pn": pn,
     "best_model": best_model_name,
@@ -211,12 +223,16 @@ data_to_export = {
     "data": formatted_df.to_dict(orient='records')
     }
 
+cleaned_data = replace_nan(data_to_export, replacement=None)
+
 # Write to JSON file with indentation
 with open(output_file_path, 'w') as f:
-    json.dump(data_to_export, f, indent=4)
+    json.dump(cleaned_data, f, indent=4)
 
 
 # %%
 print('true')
 
 
+
+# %%

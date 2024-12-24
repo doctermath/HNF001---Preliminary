@@ -41,7 +41,7 @@
     ],
     "data": [
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 1,
             "Quantity": 34.0,
             "MA_Prediction": 34.0,
@@ -53,7 +53,7 @@
             "DES_Prediction": 47.4181818181818
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 2,
             "Quantity": 94.0,
             "MA_Prediction": 64.0,
@@ -65,7 +65,7 @@
             "DES_Prediction": 35.28145454545455
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 3,
             "Quantity": 26.0,
             "MA_Prediction": 51.333333333333336,
@@ -77,7 +77,7 @@
             "DES_Prediction": 94.94656
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 4,
             "Quantity": 26.0,
             "MA_Prediction": 45.0,
@@ -89,7 +89,7 @@
             "DES_Prediction": 35.93240669090909
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 5,
             "Quantity": 94.0,
             "MA_Prediction": 54.8,
@@ -101,7 +101,7 @@
             "DES_Prediction": 21.74579842327273
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 6,
             "Quantity": 0.0,
             "MA_Prediction": 45.666666666666664,
@@ -113,7 +113,7 @@
             "DES_Prediction": 90.64948514816001
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 7,
             "Quantity": 102.0,
             "MA_Prediction": 53.714285714285715,
@@ -125,7 +125,7 @@
             "DES_Prediction": 7.474346057579053
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 8,
             "Quantity": 60.0,
             "MA_Prediction": 54.5,
@@ -137,7 +137,7 @@
             "DES_Prediction": 95.1254751856439
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 9,
             "Quantity": 60.0,
             "MA_Prediction": 55.111111111111114,
@@ -149,7 +149,7 @@
             "DES_Prediction": 70.62558696670233
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 10,
             "Quantity": 60.0,
             "MA_Prediction": 55.6,
@@ -161,7 +161,7 @@
             "DES_Prediction": 63.17546845090545
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 11,
             "Quantity": 60.0,
             "MA_Prediction": 56.0,
@@ -173,7 +173,7 @@
             "DES_Prediction": 60.92333231952877
         },
         {
-            "P/N": "205230",
+            "PartNum": "205230",
             "Period": 12,
             "Quantity": 60.0,
             "MA_Prediction": 56.333333333333336,
@@ -185,9 +185,9 @@
             "DES_Prediction": 60.251305336566524
         },
         {
-            "P/N": NaN,
+            "PartNum": null,
             "Period": 13,
-            "Quantity": NaN,
+            "Quantity": null,
             "MA_Prediction": 52.0,
             "Smoothed_Weighted_Prediction": 59.61441716739999,
             "Linear_Regression_Prediction": 65.15151515151516,
