@@ -47,7 +47,6 @@ log_message(f"Script Run")
 # %%
 # Retrive JSON Data From API.
 url = "http://172.16.1.59:18080/v1/web/get-spare-parts-all-history-data"
-log_message(f"Finish Retriving API")
 
 # Fetch JSON data from the API
 response = requests.get(url)
@@ -56,6 +55,10 @@ df = response.json()  # Parse JSON data
 
 # Convert JSON to Pandas DataFrame
 data = pd.DataFrame(df['data'])
+
+log_message(f"Finish Retriving API")
+
+
 # display(data)
 
 # %%
