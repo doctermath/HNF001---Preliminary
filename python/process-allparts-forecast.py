@@ -20,13 +20,34 @@ import json
 import sys
 import requests
 import math
+from datetime import datetime
+
 
 # Set Display Width Longer
 # pd.options.display.max_colwidth = 100 # 100 for long width
 
 # %%
+# File path to store the log
+log_file = "script_log.log"
+
+def log_message(message):
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    with open(log_file, "a") as file:  # "a" mode appends to the file
+        file.write(f"{current_time} - {message}\n")
+
+# Get the current date and time
+current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+# Write to the log file
+log_message(f"Script Run")
+
+# print(f"Log written: {current_time}")
+
+# %%
 # Retrive JSON Data From API.
 url = "http://172.16.1.59:18080/v1/web/get-spare-parts-all-history-data"
+log_message(f"Finish Retriving API")
 
 # Fetch JSON data from the API
 response = requests.get(url)
@@ -214,6 +235,8 @@ data['FD'] = round(data['best_value'])
 # %%
 # Send Data Back To API
 
+log_message(f"Start Sending To API")
+
 # API endpoint
 url = "http://172.16.1.59:18080/v1/web/parts-forecast-result"
 
@@ -222,6 +245,11 @@ json2 = data2.to_dict(orient='records')
 
 # Send POST request
 response = requests.post(url, json=json2)
+
+log_message(f"Send Complete")
+log_message(f"Status Code: {response.status_code}")
+log_message(f"Response Body: {response.text}")
+log_message("Status : " + str( response.json().get("success", "No status key found")))
 
 # Print response
 print(f"Status Code: {response.status_code}")
