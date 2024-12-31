@@ -27,22 +27,13 @@ from datetime import datetime
 # pd.options.display.max_colwidth = 100 # 100 for long width
 
 # %%
-# File path to store the log
-log_file = "script_log.log"
-
+# Function to print a message with log
 def log_message(message):
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    with open(log_file, "a") as file:  # "a" mode appends to the file
-        file.write(f"{current_time} - {message}\n")
-
-# Get the current date and time
-current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"{current_time} - {message}")
 
 # Write to the log file
-log_message(f"Script Run")
-
-# print(f"Log written: {current_time}")
+log_message("Python Spareparts Forecast Program Begins")
 
 # %%
 # Retrive JSON Data From API.
@@ -56,8 +47,8 @@ df = response.json()  # Parse JSON data
 # Convert JSON to Pandas DataFrame
 data = pd.DataFrame(df['data'])
 
-log_message(f"Finish Retriving API")
-
+log_message("Finish Retriving API")
+log_message("Retrieved " + str(len(data)) + " data")
 
 # display(data)
 
@@ -71,6 +62,7 @@ if 1 == 0:
 
 # %%
 # Add Metric to the data
+log_message("Begin Calculating Data")
 
 # get mean and standart deviation of first 12 data
 data['mean_12'] = data['D'].apply(lambda x: np.mean(x[:12]))
@@ -187,6 +179,8 @@ data['des_result'] = data['des'].apply(lambda x: x[-1:])
 
 # %%
 # calculate R2 Score and RMSE
+log_message("Calculating R2 and RMSE Score")
+
 def metric(x):
     period_lenght = len(x['clipped_d'])
     df = pd.DataFrame()
@@ -238,26 +232,21 @@ data['FD'] = round(data['best_value'])
 # %%
 # Send Data Back To API
 
-log_message(f"Start Sending To API")
-
 # API endpoint
 url = "http://172.16.1.59:18080/v1/web/parts-forecast-result"
 
 data2 = data[['period', 'branch', 'agency', 'partno', 'FD', 'mean_12', 'std_12', 'ub']]
 json2 = data2.to_dict(orient='records')
 
+log_message("Start Sending " + str(len(data2)) + " To API")
+
 # Send POST request
 response = requests.post(url, json=json2)
 
-log_message(f"Send Complete")
+log_message(f"Send API Complete")
 log_message(f"Status Code: {response.status_code}")
 log_message(f"Response Body: {response.text}")
-log_message("Status : " + str( response.json().get("success", "No status key found")))
-
-# Print response
-print(f"Status Code: {response.status_code}")
-print(f"Response Body: {response.text}")
-print(response.json().get("success", "No status key found"))
+print(str( response.json().get("success", "No status key found")))
 
 # %%
 # Convert DataFrame to JSON and write to a file
